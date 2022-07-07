@@ -48,7 +48,7 @@ app.use(express.urlencoded({extended:true}));
 
 //---------------------DB CONNECT--------------------
 //connect to the marcSurfboards mongo DB
-mongoose.connect('mongodb+srv://marcsurfboards:twinnyforspeed@marc-surfboards.vultup4.mongodb.net/?retryWrites=true&w=majority', {dbName: "marcsurfbaords", useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect('mongodb+srv://marcsurfboards:twinnyforspeed@marc-surfboards.vultup4.mongodb.net/?retryWrites=true&w=majority', {dbName: "marcsurfboards", useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => {
         console.log('Successfully connected to marcSurfboards DB');
     })

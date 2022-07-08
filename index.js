@@ -264,7 +264,8 @@ app.get("/users" , authenticateToken, async(req, res) =>{
     //get all users from db
     const users = await User.find({});
 
-    // resong with list of users as a json object
+    // respond with list of users as a json object
+    res.send(users);
     res.json(users);
 
 })

@@ -24,12 +24,7 @@ dotenv.config();
 const app = express();
 
 //Getting app to listen for requests on port 5000
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-
-    console.log("listening on PORT 5000");
-
-})
+const PORT = 5010;
 
 
 
@@ -48,14 +43,21 @@ app.use(express.urlencoded({extended:true}));
 
 //---------------------DB CONNECT--------------------
 //connect to the marcSurfboards mongo DB
-mongoose.connect('mongodb+srv://marcsurfboards:twinnyforspeed@marc-surfboards.vultup4.mongodb.net/?retryWrites=true&w=majority', {dbName: "marcsurfboards", useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => {
-        console.log('Successfully connected to marcSurfboards DB');
-    })
-    .catch(e => {
-        console.log('Error in mongoose.connect backend/index.js/');
-        console.log(e);
-    });
+// mongoose.connect('mongodb+srv://test:test@surfboard.obdi5i6.mongodb.net/?retryWrites=true&w=majority', {dbName: "marcsurfboards", useNewUrlParser: true, useUnifiedTopology: true})
+
+// mongoose.connect('mongodb+srv://neil:testcase@surfboard.obdi5i6.mongodb.net/?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true}, ()=>{
+//     console.log("Connected")
+// })
+mongoose.connect(
+    "mongodb+srv://neil:testcase@surfboard.obdi5i6.mongodb.net/surfBoard?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    },
+    () => {
+      console.log("connected to database myDb ;)");
+    }
+  );
 
 //---------------------SIGN UP & LOGIN ROUTES--------------------
 
@@ -330,3 +332,8 @@ if (process.env.NODE_ENV === 'production'){
             res.sendFile(path.resolve(__dirname, 'frontend', 'build','index.html'));
         });
 }
+app.listen(3001, () => {
+
+    console.log("listening on PORT 5000");
+
+})

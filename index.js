@@ -24,7 +24,7 @@ dotenv.config();
 const app = express();
 
 //Getting app to listen for requests on port 5000
-const PORT = 5010;
+const PORT = 5000;
 
 
 
@@ -332,7 +332,7 @@ if (process.env.NODE_ENV === 'production'){
             res.sendFile(path.resolve(__dirname, 'frontend', 'build','index.html'));
         });
 }
-app.listen(3001, () => {
+app.listen(PORT, () => {
 
     console.log("listening on PORT 5000");
 

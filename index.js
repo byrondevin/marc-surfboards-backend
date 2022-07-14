@@ -315,7 +315,7 @@ app.put('/users/:id/', async (req, res) => {
 })
 
 //DELETE USER
-app.delete("/users/:id", authenticateToken, async (req,res) =>{
+app.delete("/usersdel/:id", authenticateToken, async (req,res) =>{
     
     //getting id of item to be deleted. passed in request parameters
     const {id} = req.params;

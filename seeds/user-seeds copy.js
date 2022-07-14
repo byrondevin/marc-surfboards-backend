@@ -4,17 +4,17 @@ import User from  '../modules/user.js';
 
 
 
-//connect to the marcSurfboards mongo DB
-mongoose.connect('mongodb://localhost:27017/marcSurfboards', {
-        useNewUrlParser: true, useUnifiedTopology: true
-    })
-    .then(() => {
-        console.log('Successfully connected to marcSurfboards DB');
-    })
-    .catch(e => {
-        console.log('Error in mongoose.connect backend/index.js/');
-        console.log(e);
-    });
+// //connect to the marcSurfboards mongo DB
+// mongoose.connect('mongodb://localhost:27017/marcSurfboards', {
+//         useNewUrlParser: true, useUnifiedTopology: true
+//     })
+//     .then(() => {
+//         console.log('Successfully connected to marcSurfboards DB');
+//     })
+//     .catch(e => {
+//         console.log('Error in mongoose.connect backend/index.js/');
+//         console.log(e);
+//     });
 
 
 //Create array of Users

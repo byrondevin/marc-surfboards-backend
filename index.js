@@ -50,7 +50,7 @@ app.use(express.urlencoded({extended:true}));
 // })
 mongoose.connect(
     // "mongodb+srv://neil:testcase@surfboard.obdi5i6.mongodb.net/surfBoard?retryWrites=true&w=majority",
-    "mongodb+srv://marcsurfboards:twinnyforspeed@marc-surfboards.vultup4.mongodb.net/?retryWrites=true&w=majority",
+    "mongodb+srv://marcsurfboards:twinnyforspeed@marc-surfboards.vultup4.mongodb.net/userDB_Enquiry?retryWrites=true&w=majority",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,

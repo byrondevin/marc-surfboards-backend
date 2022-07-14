@@ -3,18 +3,17 @@ import mongoose from "mongoose";
 import Enquiry from  '../modules/enquiry.js';
 
 
-
-// //connect to the marcSurfboards mongo DB
-// mongoose.connect('mongodb://localhost:27017/marcSurfboards', {
-//         useNewUrlParser: true, useUnifiedTopology: true
-//     })
-//     .then(() => {
-//         console.log('Successfully connected to marcSurfboards DB');
-//     })
-//     .catch(e => {
-//         console.log('Error in mongoose.connect backend/index.js/');
-//         console.log(e);
-//     });
+mongoose.connect(
+    // "mongodb+srv://neil:testcase@surfboard.obdi5i6.mongodb.net/surfBoard?retryWrites=true&w=majority",
+    "mongodb+srv://marcsurfboards:twinnyforspeed@marc-surfboards.vultup4.mongodb.net/userDB_Enquiry?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    },
+    () => {
+      console.log("connected to database myDb ;)");
+    }
+  );
 
 
 //Create array of Users

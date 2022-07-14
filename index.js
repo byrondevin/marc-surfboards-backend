@@ -41,10 +41,15 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 //Solving CORS issue: Add Access-Control-Allow-Origin header to all requests
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-  });
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     next();
+//   });
+app.use(cors({
+    origin: "https://illustrious-pavlova-ad9c7d.netlify.app/",
+    credentials: true,            //access-control-allow-credentials:true
+    optionSuccessStatus: 200,
+  }))
 
 
 //---------------------DB CONNECT--------------------

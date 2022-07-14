@@ -40,6 +40,12 @@ app.use(express.json());
 //gives access to request body
 app.use(express.urlencoded({extended:true}));
 
+//Solving CORS issue: Add Access-Control-Allow-Origin header to all requests
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+  });
+
 
 //---------------------DB CONNECT--------------------
 //connect to the marcSurfboards mongo DB

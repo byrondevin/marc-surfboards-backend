@@ -279,7 +279,7 @@ app.get("/users" , authenticateToken, async(req, res) =>{
 
 //EDIT USER
 // get route logs user into db. JWT authentication. bcrypt to encode user info. Async so can await db fetch
-app.put('/users/:id/', authenticateToken, async (req, res) => {
+app.put('/users/:id/', async (req, res) => {
 
     //Getting id value from params
     const {id}=req.params;

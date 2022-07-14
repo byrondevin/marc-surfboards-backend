@@ -76,7 +76,9 @@ app.post("/sign-up", async (req, res) => {
 
         // const newUser = new User({email: req.query.email, password: req.query.password, admin: false});
         const newUser = new User({email: req.body.email, password: hashedPassword, admin: false});
+        console.log(newUser);
         const user = await newUser.save();
+        console.log(user);
         
         //respond with user varaible, the response from the  function
         res.json(user);

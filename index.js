@@ -42,9 +42,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 //CORS allowing cross origin requests
-// app.use(cors({
-//     origin: "https://illustrious-pavlova-ad9c7d.netlify.app",
-// }))
+app.use(cors({
+    origin: "https://illustrious-pavlova-ad9c7d.netlify.app",
+}))
 
 
 

@@ -8,6 +8,7 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import {fileURLToPath} from 'url';
 import path from "path";
+import cors from "cors";
 
 
 
@@ -40,6 +41,10 @@ app.use(express.json());
 //gives access to request body
 app.use(express.urlencoded({extended:true}));
 
+//CORS allowing cross origin requests
+app.use(cors({
+    origin: "https://marc-surfboards-backend.herokuapp.com/",
+}))
 
 
 
@@ -62,118 +67,27 @@ mongoose.connect(
     }
   );
 
-//---------------------SIGN UP & LOGIN ROUTES--------------------
+//---------------------ROUTE IMPORTS AND ALLOCATIONS--------------------
 
-// SIGN UP
-//post route /sign-up. adds new user to db. bcrypt to encode user info. Async so can await db fetch
-app.post("/sign-up", async (req, res) => {
+//Sign-in
+import signInRoute from './routes/Sign-in.js';
+app.use('/sign-in', signInRoute);
 
-    // Try adding new user to db
-    try{
-        //bcrypt hashing
-        const salt = await bcrypt.genSalt();
-        const hashedPassword = await bcrypt.hash(req.body.password, salt);
- 
-        
+//Sign-up
+import signUpRoute from './routes/Sign-up.js';
+app.use('/sign-up', signUpRoute);
 
+//Enquiry
+import enquiryRoute from './routes/Enquiry.js';
+app.use('/enquiry', enquiryRoute);
 
-        // const newUser = new User({email: req.query.email, password: req.query.password, admin: false});
-        const newUser = new User({email: req.body.email, password: hashedPassword, admin: false});
-        console.log(newUser);
-        const user = await newUser.save();
-        console.log(user);
-        
-        //respond with user varaible, the response from the  function
-        res.json(user);
-       
+//Users
+import usersRoute from './routes/Users.js';
+app.use('/users', usersRoute);
 
-    }
-    //Catch, print and send errors relating to the attempt to add new user to d
-    catch(e){
-
-        console.log(e);
-        res.status(500).send(e);
-
-    }
- });
-
-
-
-//LOG IN
-//get route logs user into db. JWT authentication. bcrypt to encode user info. Async so can await db fetch
-app.post("/sign-in", async (req, res) => {
-
-
-    // Try find username entered
-    try{
-
-        //mongoose request to db to find username enteres
-        const user = await User.findOne({email: req.body.email});
-
-       
-        //if user not found, print and return the message that the username isnt found
-        if (user ==null){
-            console.log('cannot find username entered');
-            return res.status(400).send('cannot find username entered');
-        }
-
-        //try comparing passwords. decrypting with bcrypt
-        try{
-            // bcrypt compare function
-            if(await bcrypt.compare(req.body.password, user.password[0])){
-
-
-                    //create Json object with username and access. This sent with token
-                    const payload = {
-                        'email': user.email, 
-                        'admin': user.admin
-                    }
-
-                   //Try creating JSON Token. If successfull, return as key-value pair
-                    try {
-
-                        //
-                        const token = jwt.sign(
-                            JSON.stringify(payload), 
-                            process.env.ACCESS_TOKEN_SECRET
-                        )
-
-                        //return JWT token
-                        res.json({'token': token})
-
-                    } 
-                    //Catch errors relating to Token creation and sending
-                    catch (e) {
-                        console.log("JWT Sign failed")
-                        console.log(e)
-                        
-                    }
-           
-            }
-            //else triggered if decrypted passwords dont match, but comparison was successfull
-            else{
-                    console.log("password didnt match");
-                    res.status(403).send({'err': 'incorrect login'})
-            }
-                
-        } 
-        //catches errors related to bcrypt compare
-        catch(e){
-                console.log("bcrypt compare failed");
-                return res.status(500).send(e);
-            }
-
-
-    }
-    //catches any errors from username mongoose find()
-    catch(e){
-        console.log("ERROR with username findOne that tries to match wmail addrs with user in db");
-        console.log(e);
-    }
-    
-
- });
-
+//UsersDel
+import usersDelRoute from './routes/Usersdel.js';
+app.use('/usersdel', usersDelRoute);
 
 
 //------- AUTHENTICATE ADMIN USER MIFDDLEWARE. Can be used to authenticate a user before making a request. 
@@ -211,121 +125,266 @@ function authenticateToken(req, res, next){
  }
 
 
-//---------------------ENQUIRY ROUTES--------------------
-// Get all enquiries
-//get route
-
-app.get("/enquiry", authenticateToken, async (req, res) => {
-
-    //get all users from db
-    const enquiries = await Enquiry.find({});
-
-    // resong with list of users as a json object
-    res.json(enquiries);
- });
 
 
-// Add Enquiry
-//post route /enquiry. adds new enquiry to db.  Async so can await db fetch
-app.post("/enquiry", async (req, res) => {
+// //***************************ROUTES**********************
+// //***************************ROUTES**********************
+// //***************************ROUTES**********************
+// //***************************ROUTES**********************
+// //***************************ROUTES**********************
+// //***************************ROUTES**********************
+// //***************************ROUTES**********************
+// //***************************ROUTES**********************
+// //***************************ROUTES**********************
+// //***************************ROUTES**********************
+// //***************************ROUTES**********************
+// //***************************ROUTES**********************
+// //***************************ROUTES**********************
+// //***************************ROUTES**********************
+// //---------------------SIGN UP & LOGIN ROUTES--------------------
 
-    // Try adding new user to db
-    try{
+// // MOVED: SIGN UP
+// //post route /sign-up. adds new user to db. bcrypt to encode user info. Async so can await db fetch
+// app.post("/sign-up", async (req, res) => {
 
-        const newEnquiry = new Enquiry({name: req.body.name, email: req.body.email, board: req.body.board, message: req.body.message});
-        const enquiry = await newEnquiry.save();
+//     // Try adding new user to db
+//     try{
+//         //bcrypt hashing
+//         const salt = await bcrypt.genSalt();
+//         const hashedPassword = await bcrypt.hash(req.body.password, salt);
+ 
         
-        //respond with user varaible, the response from the  function
-        res.json(enquiry);
+
+
+//         // const newUser = new User({email: req.query.email, password: req.query.password, admin: false});
+//         const newUser = new User({email: req.body.email, password: hashedPassword, admin: false});
+//         console.log(newUser);
+//         const user = await newUser.save();
+//         console.log(user);
+        
+//         //respond with user varaible, the response from the  function
+//         res.json(user);
        
 
-    }
-    //Catch, print and send errors relating to the attempt to add new user to d
-    catch(e){
+//     }
+//     //Catch, print and send errors relating to the attempt to add new user to d
+//     catch(e){
 
-        console.log(e);
-        res.status(500).send(e);
+//         console.log(e);
+//         res.status(500).send(e);
 
-    }
- });
+//     }
+//  });
 
- //DELETE ENQUIRY
-app.delete("/enquiry/:id", authenticateToken, async (req,res) =>{
+
+
+// //MOVED: LOG IN
+// //get route logs user into db. JWT authentication. bcrypt to encode user info. Async so can await db fetch
+// app.post("/sign-in", async (req, res) => {
+
+
+//     // Try find username entered
+//     try{
+
+//         //mongoose request to db to find username enteres
+//         const user = await User.findOne({email: req.body.email});
+
+       
+//         //if user not found, print and return the message that the username isnt found
+//         if (user ==null){
+//             console.log('cannot find username entered');
+//             return res.status(400).send('cannot find username entered');
+//         }
+
+//         //try comparing passwords. decrypting with bcrypt
+//         try{
+//             // bcrypt compare function
+//             if(await bcrypt.compare(req.body.password, user.password[0])){
+
+
+//                     //create Json object with username and access. This sent with token
+//                     const payload = {
+//                         'email': user.email, 
+//                         'admin': user.admin
+//                     }
+
+//                    //Try creating JSON Token. If successfull, return as key-value pair
+//                     try {
+
+//                         //
+//                         const token = jwt.sign(
+//                             JSON.stringify(payload), 
+//                             process.env.ACCESS_TOKEN_SECRET
+//                         )
+
+//                         //return JWT token
+//                         res.json({'token': token})
+
+//                     } 
+//                     //Catch errors relating to Token creation and sending
+//                     catch (e) {
+//                         console.log("JWT Sign failed")
+//                         console.log(e)
+                        
+//                     }
+           
+//             }
+//             //else triggered if decrypted passwords dont match, but comparison was successfull
+//             else{
+//                     console.log("password didnt match");
+//                     res.status(403).send({'err': 'incorrect login'})
+//             }
+                
+//         } 
+//         //catches errors related to bcrypt compare
+//         catch(e){
+//                 console.log("bcrypt compare failed");
+//                 return res.status(500).send(e);
+//             }
+
+
+//     }
+//     //catches any errors from username mongoose find()
+//     catch(e){
+//         console.log("ERROR with username findOne that tries to match wmail addrs with user in db");
+//         console.log(e);
+//     }
     
-    //getting id of item to be deleted. passed in request parameters
-    const {id} = req.params;
 
-    //sending delete mongoose request to db to delete said user using id match
-    const deletedEnquiry = await Enquiry.findByIdAndDelete(id);    
-
-    //return deleted user data
-    res.json(deletedEnquiry);
- })
-
-//---------------------ADMIN ACCESS USER ROUTES--------------------
-
-//DISPLAY ALL
-//Get all users from mongo DB
-app.get("/users" , authenticateToken, async(req, res) =>{
-
-    //get all users from db
-    const users = await User.find({});
-
-    // respond with list of users as a json object
-    // res.send(users);
-    res.status(200).json({'users': users});
-
-})
-
-//EDIT USER
-// get route logs user into db. JWT authentication. bcrypt to encode user info. Async so can await db fetch
-app.put('/users/:id/', async (req, res) => {
-
-    //Getting id value from params
-    const {id}=req.params;
-
-    //make admin value fale by default
-    let adminValue = false;
-    //if admin checkbox is checked, make admin value true
-    if (req.body.adminCheckbox == 'on'){
-        adminValue = true;
-    }
-
-    //use id to find user to update in db. update using form values and adminValue
-    const product = await User.findByIdAndUpdate(
-        //ID of the product to find
-        id,
-
-        //new product details
-        {
-            email: req.body.emailEditForm,
-            password: req.body.passwordEditForm,
-            admin:  adminValue
-        },
-
-        //run validation and return new object
-        {runValidators:true, new:true}
-
-        );
-
-    //refresh user page to display new vaues
-    res.redirect('/users')
+//  });
 
 
-})
 
-//DELETE USER
-app.delete("/usersdel/:id", authenticateToken, async (req,res) =>{
+
+
+
+// //---------------------MOVED: ENQUIRY ROUTES--------------------
+// // MOVED: Get all enquiries
+// //get route
+// app.get("/enquiry", authenticateToken, async (req, res) => {
+
+//     //get all users from db
+//     const enquiries = await Enquiry.find({});
+
+//     // resong with list of users as a json object
+//     res.json(enquiries);
+//  });
+
+// // MOVED: Add Enquiry
+// //post route /enquiry. adds new enquiry to db.  Async so can await db fetch
+// app.post("/enquiry", async (req, res) => {
+
+//     // Try adding new user to db
+//     try{
+
+//         const newEnquiry = new Enquiry({name: req.body.name, email: req.body.email, board: req.body.board, message: req.body.message});
+//         const enquiry = await newEnquiry.save();
+        
+//         //respond with user varaible, the response from the  function
+//         res.json(enquiry);
+       
+
+//     }
+//     //Catch, print and send errors relating to the attempt to add new user to d
+//     catch(e){
+
+//         console.log(e);
+//         res.status(500).send(e);
+
+//     }
+//  });
+
+//  //MOVED: DELETE ENQUIRY
+// app.delete("/enquiry/:id", authenticateToken, async (req,res) =>{
     
-    //getting id of item to be deleted. passed in request parameters
-    const {id} = req.params;
+//     //getting id of item to be deleted. passed in request parameters
+//     const {id} = req.params;
 
-    //sending delete mongoose request to db to delete said user using id match
-    const deletedUser = await User.findByIdAndDelete(id);    
+//     //sending delete mongoose request to db to delete said user using id match
+//     const deletedEnquiry = await Enquiry.findByIdAndDelete(id);    
 
-    //return deleted user data
-    res.json(deletedUser);
- })
+//     //return deleted user data
+//     res.json(deletedEnquiry);
+//  })
+
+// //---------------------MOVED: ADMIN ACCESS USER ROUTES--------------------
+
+// //MOVED: DISPLAY ALL
+// //Get all users from mongo DB
+// app.get("/users" , authenticateToken, async(req, res) =>{
+
+//     //get all users from db
+//     const users = await User.find({});
+
+//     // respond with list of users as a json object
+//     // res.send(users);
+//     res.status(200).json({'users': users});
+
+// })
+
+// //MOVED: EDIT USER
+// // get route logs user into db. JWT authentication. bcrypt to encode user info. Async so can await db fetch
+// app.put('/users/:id/', async (req, res) => {
+
+//     //Getting id value from params
+//     const {id}=req.params;
+
+//     //make admin value fale by default
+//     let adminValue = false;
+//     //if admin checkbox is checked, make admin value true
+//     if (req.body.adminCheckbox == 'on'){
+//         adminValue = true;
+//     }
+
+//     //use id to find user to update in db. update using form values and adminValue
+//     const product = await User.findByIdAndUpdate(
+//         //ID of the product to find
+//         id,
+
+//         //new product details
+//         {
+//             email: req.body.emailEditForm,
+//             password: req.body.passwordEditForm,
+//             admin:  adminValue
+//         },
+
+//         //run validation and return new object
+//         {runValidators:true, new:true}
+
+//         );
+
+//     //refresh user page to display new vaues
+//     res.redirect('/users')
+
+
+// })
+
+// //MOVED: DELETE USER
+// app.delete("/usersdel/:id", authenticateToken, async (req,res) =>{
+    
+//     //getting id of item to be deleted. passed in request parameters
+//     const {id} = req.params;
+
+//     //sending delete mongoose request to db to delete said user using id match
+//     const deletedUser = await User.findByIdAndDelete(id);    
+
+//     //return deleted user data
+//     res.json(deletedUser);
+//  })
+// //**********************END OF ROUTES ***********************/
+//  //**********************END OF ROUTES ***********************/
+//  //**********************END OF ROUTES ***********************/
+//  //**********************END OF ROUTES ***********************/
+//  //**********************END OF ROUTES ***********************/
+//  //**********************END OF ROUTES ***********************/
+//  //**********************END OF ROUTES ***********************/
+//  //**********************END OF ROUTES ***********************/
+//  //**********************END OF ROUTES ***********************/
+//  //**********************END OF ROUTES ***********************/
+//  //**********************END OF ROUTES ***********************/
+//  //**********************END OF ROUTES ***********************/
+//  //**********************END OF ROUTES ***********************/
+//  //**********************END OF ROUTES ***********************/
 
 
 //procution =live site

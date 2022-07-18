@@ -120,7 +120,7 @@ router.put('/:id', async (req, res) => {
         {runValidators:true, new:true}
 
         );
-
+    alert("user ebing edited...");
     //refresh user page to display new vaues
     res.redirect('/users')
 

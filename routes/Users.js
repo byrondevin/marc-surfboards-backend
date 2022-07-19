@@ -85,7 +85,7 @@ router.put("/", async (req, res) => {
     let body = req.body;
     let id = req.body.userId;
   //Getting id value from params
-  res.status(200).json({hereistheID: id});
+  res.status(200).json({hereistheID: body});
   
 
   //use id to find user to update in db. update using form values and adminValue

@@ -78,10 +78,11 @@ router.get("/", authenticateToken, async (req, res) => {
 
 //EDIT USER
 // get route logs user into db. JWT authentication. bcrypt to encode user info. Async so can await db fetch
-router.put("/:id", async (req, res) => {
+router.put("/", async (req, res) => {
   //Getting id value from params
   const { id } = req.params;
 
+  return req.body;
   //make admin value fale by default
   let adminValue = false;
   //if admin checkbox is checked, make admin value true

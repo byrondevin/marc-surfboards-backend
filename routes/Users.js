@@ -81,13 +81,7 @@ router.get("/", authenticateToken, async (req, res) => {
 router.put("/", async (req, res) => {
   //Getting id value from params
   const { id } = req.params;
-  res.status(200).json({ body: req.body });
-  //make admin value fale by default
-  let adminValue = false;
-  //if admin checkbox is checked, make admin value true
-  if (req.body.adminCheckbox == "on") {
-    adminValue = true;
-  }
+  res.status(200).json({req.body.userEmail });
 
   //use id to find user to update in db. update using form values and adminValue
   const product = await User.findByIdAndUpdate(
@@ -96,9 +90,9 @@ router.put("/", async (req, res) => {
 
     //new product details
     {
-      email: req.body.emailEditForm,
-      password: req.body.passwordEditForm,
-      admin: adminValue,
+      email: req.body.userEmail,
+      password: req.body.userPW,
+      admin: req.body.userAdmin,
     },
 
     //run validation and return new object

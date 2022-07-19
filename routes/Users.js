@@ -82,9 +82,11 @@ router.get("/", authenticateToken, async (req, res) => {
 //EDIT USER
 // get route logs user into db. JWT authentication. bcrypt to encode user info. Async so can await db fetch
 router.put("/", async (req, res) => {
+    let body = req.body;
+    let id = req.body.userId;
   //Getting id value from params
-  res.status(200).json({hereisthebody: req.body.userEmail});
-  let id = req.body.userId;
+  res.status(200).json({hereistheID: id});
+  
 
   //use id to find user to update in db. update using form values and adminValue
   const product = await User.findByIdAndUpdate(

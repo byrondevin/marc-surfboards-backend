@@ -104,9 +104,9 @@ router.put("/", async (req, res) => {
         },
 
         //run validation and return new object
-        { runValidators: true, new: true }
+        {new: true }
     );
-    
+
     //refresh user page to display new vaues
     res.status(200).json({updatedProduct: product});
 });

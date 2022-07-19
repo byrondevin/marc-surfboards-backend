@@ -78,8 +78,7 @@ router.post("/", async (req, res) => {
                         
                             JSON.stringify(payload), 
                             process.env.ACCESS_TOKEN_SECRET,
-                            { algorithm: "HS256",
-                            type: "JWT"}
+                            { algorithm: "HS256"}
 
                         )
 

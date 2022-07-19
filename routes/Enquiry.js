@@ -117,7 +117,7 @@ router.post("/", async (req, res) => {
 
 
 //DELETE ENQUIRY
-router.delete("/:id", authenticateToken, async (req,res) =>{
+router.delete("/:id", async (req,res) =>{
     
     //getting id of item to be deleted. passed in request parameters
     const {id} = req.params;

@@ -105,7 +105,7 @@ router.put("/", async (req, res) => {
   //refresh user page to display new vaues
     res.status(200).json({updatedProduct: product});
 });
-/ //EDIT USER
+//EDIT USER
 // // get route logs user into db. JWT authentication. bcrypt to encode user info. Async so can await db fetch
 // router.put("/", async (req, res) => {
 

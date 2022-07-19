@@ -83,13 +83,13 @@ router.get("/", authenticateToken, async (req, res) => {
 // get route logs user into db. JWT authentication. bcrypt to encode user info. Async so can await db fetch
 router.put("/", async (req, res) => {
   //Getting id value from params
+  res.status(200).json({identificationNumber: req.body.userId});
   let id = req.body.userId;
-  res.status(200).json({ID: req.body.userId});
 
   //use id to find user to update in db. update using form values and adminValue
   const product = await User.findByIdAndUpdate(
     //ID of the product to find
-    req.body.userId,
+    id,
 
     //new product details
     {
@@ -102,7 +102,7 @@ router.put("/", async (req, res) => {
     { runValidators: true, new: true }
   );
   //refresh user page to display new vaues
-  res.status(200).json({updatedProduct: product});
+//   res.status(200).json({updatedProduct: product});
 });
 
 

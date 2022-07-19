@@ -81,7 +81,6 @@ router.get("/", authenticateToken, async (req, res) => {
 router.put("/", async (req, res) => {
   //Getting id value from params
   
-  res.status(200).json({userEmail: req.body});
 
   //use id to find user to update in db. update using form values and adminValue
   const product = await User.findByIdAndUpdate(

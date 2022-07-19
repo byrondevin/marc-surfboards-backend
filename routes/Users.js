@@ -2,6 +2,7 @@ import express from "express";
 import methodOverride from "method-override";
 import User from "../modules/user.js";
 import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt';
 import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import path from "path";
@@ -84,18 +85,22 @@ router.get("/", authenticateToken, async (req, res) => {
 router.put("/", async (req, res) => {
     let body = req.body;
     let id = req.body.userId;
+
+    // bcrypt hashing
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(req.body.userPW, salt);
   
   
 
-  //use id to find user to update in db. update using form values and adminValue
-  const product = await User.findByIdAndUpdate(
+    //use id to find user to update in db. update using form values and adminValue
+    const product = await User.findByIdAndUpdate(
     //ID of the product to find
     id,
 
     //new product details
     {
       email: req.body.userEmail,
-      password: req.body.userPW,
+      password: hashedPassword,
       admin: req.body.userAdmin,
     },
 

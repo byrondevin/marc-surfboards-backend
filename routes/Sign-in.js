@@ -70,13 +70,15 @@ router.post("/", async (req, res) => {
                         'admin': user.admin
                     }
 
+
                    //Try creating JSON Token. If successfull, return as key-value pair
                     try {
 
                         const token = jwt.sign(
-
+                        
                             JSON.stringify(payload), 
-                            process.env.ACCESS_TOKEN_SECRET
+                            process.env.ACCESS_TOKEN_SECRET,
+                            { algorithm: "HS256"}
 
                         )
 

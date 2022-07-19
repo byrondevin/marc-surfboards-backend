@@ -1,3 +1,4 @@
+//---------------------IMPORTS---------------------
 import express from "express";
 import methodOverride from 'method-override';
 import User from  '../modules/user.js';
@@ -16,17 +17,11 @@ const router = express.Router();
 
 const __filename = fileURLToPath(import.meta.url);
 
-const __dirname = path.dirname(__filename);
-
 // Configuring the dotenv file that holds the secret keyss
 dotenv.config();
 
 //Assign express to 'app' variable 
 const app = express();
-
-//Getting app to listen for requests on port 5000
-const PORT = process.env.port || 5000;
-
 
 
 
@@ -43,6 +38,9 @@ app.use(express.urlencoded({extended:true}));
 
 
 
+
+//---------------------ROUTES--------------------
+
 //LOG IN
 //get route logs user into db. JWT authentication. bcrypt to encode user info. Async so can await db fetch
 router.post("/", async (req, res) => {
@@ -57,15 +55,17 @@ router.post("/", async (req, res) => {
        
         //if user not found, print and return the message that the username isnt found
         if (user ==null){
+
             console.log('cannot find username entered');
             return res.status(400).send('cannot find username entered');
+
         }
 
         //try comparing passwords. decrypting with bcrypt
         try{
+
             // bcrypt compare function
             if(await bcrypt.compare(req.body.password, user.password[0])){
-
 
                     //create Json object with username and access. This sent with token
                     const payload = {
@@ -76,10 +76,11 @@ router.post("/", async (req, res) => {
                    //Try creating JSON Token. If successfull, return as key-value pair
                     try {
 
-                        //
                         const token = jwt.sign(
+
                             JSON.stringify(payload), 
                             process.env.ACCESS_TOKEN_SECRET
+
                         )
 
                         //return JWT token
@@ -88,6 +89,7 @@ router.post("/", async (req, res) => {
                     } 
                     //Catch errors relating to Token creation and sending
                     catch (e) {
+
                         console.log("JWT Sign failed")
                         console.log(e)
                         
@@ -96,23 +98,29 @@ router.post("/", async (req, res) => {
             }
             //else triggered if decrypted passwords dont match, but comparison was successfull
             else{
+
                     console.log("password didnt match");
-                    res.status(403).send({'err': 'incorrect login'})
+                    res.status(403).send({'err': 'incorrect login'});
+
             }
                 
         } 
         //catches errors related to bcrypt compare
         catch(e){
+
                 console.log("bcrypt compare failed");
                 return res.status(500).send(e);
+
             }
 
 
     }
     //catches any errors from username mongoose find()
     catch(e){
+
         console.log("ERROR with username findOne that tries to match wmail addrs with user in db");
         console.log(e);
+        
     }
     
 

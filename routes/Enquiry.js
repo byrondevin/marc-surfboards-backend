@@ -1,3 +1,4 @@
+//---------------------IMPORTS---------------------
 import express from "express";
 import methodOverride from 'method-override';
 import Enquiry from  '../modules/enquiry.js';
@@ -14,18 +15,11 @@ const router = express.Router();
 
 const __filename = fileURLToPath(import.meta.url);
 
-const __dirname = path.dirname(__filename);
-
 // Configuring the dotenv file that holds the secret keyss
 dotenv.config();
 
 //Assign express to 'app' variable 
 const app = express();
-
-//Getting app to listen for requests on port 5000
-const PORT = process.env.port || 5000;
-
-
 
 
 
@@ -33,51 +27,74 @@ const PORT = process.env.port || 5000;
 //allows to make put, delete, etc. requests from html body, disguising as post
 app.use(methodOverride('_method') );
 
+
+
 //allows to read json objets send in request body
 app.use(express.json());
+
+
 
 //gives access to request body
 app.use(express.urlencoded({extended:true}));
 
-//------- AUTHENTICATE ADMIN USER MIFDDLEWARE. Can be used to authenticate a user before making a request. 
+
+
+//AUTHENTICATE ADMIN USER MIFDDLEWARE. Can be used to authenticate a user before making a request. 
 function authenticateToken(req, res, next){
 
-    //------Getting JWT token from request header
+
+    //Getting JWT token from request header
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
 
+    //if no token, print out custom error message and return 401
     if (token == null) {
+
         console.log("TOKEN == NULL");
         return res.sendStatus(401);
+
     }
+
 
     //verifying JWT token taken from request header. 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user)=>{
+
         
-        //if the JWT verification responds with an error, print and send the error
+        //if the JWT verification responds with an error, print and send the error with status 403
         if (err){
+
             console.log("ERROR: JWT VERIFICATION ")
             return res.sendStatus(403);
+
         }
 
-        req.user = user;
+
+        
+
 
         //if the JWT verification is successfull and has admin access, move onto next function
+        req.user = user;
         if(user.admin === true){
+
             next();
+
         }else{
+
             console.log("ERROR: NO ADMIN ACCESS ");
             return res.sendStatus(403);
+
         }
     })
  }
 
 
+
+
 //---------------------ENQUIRY ROUTES--------------------
 
+
 // Get all enquiries
-//get route
 router.get("/", authenticateToken, async (req, res) => {
 
     //get all users from db
@@ -85,13 +102,13 @@ router.get("/", authenticateToken, async (req, res) => {
 
     // resong with list of users as a json object
     res.json(enquiries);
+
  });
 
 
 
 
 // Add Enquiry
-//post route /enquiry. adds new enquiry to db.  Async so can await db fetch
 router.post("/", async (req, res) => {
 
     // Try adding new user to db
@@ -127,6 +144,7 @@ router.delete("/:id", authenticateToken, async (req,res) =>{
 
     //return deleted user data
     res.json(deletedEnquiry);
+
  })
 
 

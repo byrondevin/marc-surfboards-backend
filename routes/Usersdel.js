@@ -1,3 +1,4 @@
+//---------------------IMPORTS---------------------
 import express from "express";
 import methodOverride from 'method-override';
 import User from  '../modules/user.js';
@@ -14,17 +15,11 @@ const router = express.Router();
 
 const __filename = fileURLToPath(import.meta.url);
 
-const __dirname = path.dirname(__filename);
-
 // Configuring the dotenv file that holds the secret keyss
 dotenv.config();
 
 //Assign express to 'app' variable 
 const app = express();
-
-//Getting app to listen for requests on port 5000
-const PORT = process.env.port || 5000;
-
 
 
 
@@ -39,17 +34,19 @@ app.use(express.json());
 //gives access to request body
 app.use(express.urlencoded({extended:true}));
 
-//------- AUTHENTICATE ADMIN USER MIFDDLEWARE. Can be used to authenticate a user before making a request. 
+//AUTHENTICATE ADMIN USER MIFDDLEWARE
 function authenticateToken(req, res, next){
 
-    //------Getting JWT token from request header
+    //Getting JWT token from request header
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
 
     if (token == null) {
+
         console.log("TOKEN == NULL");
         return res.sendStatus(401);
+
     }
 
     //verifying JWT token taken from request header. 
@@ -57,18 +54,23 @@ function authenticateToken(req, res, next){
         
         //if the JWT verification responds with an error, print and send the error
         if (err){
+
             console.log("ERROR: JWT VERIFICATION ")
             return res.sendStatus(403);
+
         }
 
-        req.user = user;
-
         //if the JWT verification is successfull and has admin access, move onto next function
+        req.user = user;
         if(user.admin === true){
+
             next();
+
         }else{
+
             console.log("ERROR: NO ADMIN ACCESS ");
             return res.sendStatus(403);
+
         }
     })
  }
@@ -86,6 +88,7 @@ router.delete("/:id", authenticateToken, async (req,res) =>{
 
     //return deleted user data
     res.json(deletedUser);
+
  })
 
 

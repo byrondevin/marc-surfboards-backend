@@ -2,6 +2,7 @@ import express from "express";
 import methodOverride from "method-override";
 import User from "../modules/user.js";
 import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt';
 import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import path from "path";
@@ -82,27 +83,31 @@ router.get("/", authenticateToken, async (req, res) => {
 //EDIT USER
 // get route logs user into db. JWT authentication. bcrypt to encode user info. Async so can await db fetch
 router.put("/", async (req, res) => {
-    let body = req.body;
-    let id = req.body.userId;
+
+
+    //bcrypt hashing
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(req.body.userPW, salt);
   
   
 
-  //use id to find user to update in db. update using form values and adminValue
-  const product = await User.findByIdAndUpdate(
-    //ID of the product to find
-    id,
+    //use id to find user to update in db. update using form values and adminValue
+    const product = await User.findByIdAndUpdate(
+        //ID of the product to find
+        req.body.userId,
 
-    //new product details
-    {
-      email: req.body.userEmail,
-      password: req.body.userPW,
-      admin: req.body.userAdmin,
-    },
+        //new product details
+        {
+        email: req.body.userEmail,
+        password: req.body.userPW,
+        admin: hashedPassword,
+        },
 
-    //run validation and return new object
-    { runValidators: true, new: true }
-  );
-  //refresh user page to display new vaues
+        //run validation and return new object
+        { runValidators: true, new: true }
+    );
+    
+    //refresh user page to display new vaues
     res.status(200).json({updatedProduct: product});
 });
 

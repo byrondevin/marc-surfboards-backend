@@ -14,8 +14,6 @@ import path from "path";
 //---------------------CONFIGURATION, ETC.---------------------
 const router = express.Router();
 
-const __filename = fileURLToPath(import.meta.url);
-
 // Configuring the dotenv file that holds the secret keyss
 dotenv.config();
 

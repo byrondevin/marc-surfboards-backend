@@ -3,7 +3,7 @@ import {expect} from 'chai';
 
 
 
-//Testing sign-up function. If responds with object, the user is signed up successfully
+//Testing sign-up function that makes request to express server. If responds with object, the user is signed up successfully
 
 
 describe('signup', function() { 

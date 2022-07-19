@@ -81,8 +81,7 @@ router.get("/", authenticateToken, async (req, res) => {
 router.put("/", async (req, res) => {
   //Getting id value from params
   const { id } = req.params;
-
-  return req.body;
+  res.status(200).json({ body: req.body });
   //make admin value fale by default
   let adminValue = false;
   //if admin checkbox is checked, make admin value true
